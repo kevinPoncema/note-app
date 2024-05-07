@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    /* Estilo para los mensajes de éxito y error */
+    .success-message {
+      color: green;
+    }
+
+    .error-message {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <form method="post" action="http://localhost:3001/logIn">
+          <div class="form-group">
+            <label for="username">Usuario</label>
+            <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Ingrese su usuario">
+          </div>
+          <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Contraseña">
+          </div>
+          <div class="form-group text-center">
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="show" name="passwordVisibility" class="custom-control-input">
+              <label class="custom-control-label" for="show">Mostrar</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" id="hide" name="passwordVisibility" class="custom-control-input" checked>
+              <label class="custom-control-label" for="hide">Ocultar</label>
+            </div>
+          </div>
+          <!-- Mensaje con color dinámico -->
+          <p class="<%= colorP %>"><%= message %></p>
+          <button type="submit" class="btn btn-primary btn-lg btn-block">Iniciar Sesión</button>
+          <button type="submit" class="btn btn-secondary btn-lg btn-block" name="Registrar" value="regis">Registrarse</button>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bootstrap JS y dependencias -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script>
+    // Función para mostrar u ocultar la contraseña al hacer clic en los radio botones
+    document.getElementById('show').addEventListener('change', function() {
+      if (this.checked) {
+        document.getElementById('password').type = 'text';
+      }
+    });
+
+    document.getElementById('hide').addEventListener('change', function() {
+      if (this.checked) {
+        document.getElementById('password').type = 'password';
+      }
+    });
+  </script>
+</body>
+</html>
+
+
