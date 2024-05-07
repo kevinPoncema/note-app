@@ -16,32 +16,31 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `tbl_notas`
+-- Table structure for table `tbl_list`
 --
 
-DROP TABLE IF EXISTS `tbl_notas`;
+DROP TABLE IF EXISTS `tbl_list`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `tbl_notas` (
-  `id_nota` int NOT NULL AUTO_INCREMENT,
-  `titulo_nota` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT 'aqui va el titulo',
-  `id_user` int DEFAULT NULL,
-  `cnitenido_nota` text,
-  `tags` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`id_nota`),
-  KEY `FK_tbl_notas_tbl_usuario` (`id_user`),
-  CONSTRAINT `FK_tbl_notas_tbl_usuario` FOREIGN KEY (`id_user`) REFERENCES `tbl_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `tbl_list` (
+  `id_list` int NOT NULL AUTO_INCREMENT,
+  `titulo_list` varchar(50) NOT NULL DEFAULT '0',
+  `id_user` int NOT NULL DEFAULT (0),
+  `contenido_list` json NOT NULL,
+  `tags` varchar(50) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id_list`),
+  KEY `FK_tbl_list_tbl_usuario` (`id_user`),
+  CONSTRAINT `FK_tbl_list_tbl_usuario` FOREIGN KEY (`id_user`) REFERENCES `tbl_usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tbl_notas`
+-- Dumping data for table `tbl_list`
 --
 
-LOCK TABLES `tbl_notas` WRITE;
-/*!40000 ALTER TABLE `tbl_notas` DISABLE KEYS */;
-INSERT INTO `tbl_notas` VALUES (8,'salsas aaaaa',8,'hola mundo soy un web dev','goku,vegeta');
-/*!40000 ALTER TABLE `tbl_notas` ENABLE KEYS */;
+LOCK TABLES `tbl_list` WRITE;
+/*!40000 ALTER TABLE `tbl_list` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tbl_list` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
