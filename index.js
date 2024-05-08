@@ -1,4 +1,3 @@
-// Importa las dependencias
 require('dotenv').config();
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -34,21 +33,27 @@ app.get("/", (req, res) => {
 const userControl = require("./controllers/userControler");
 const userController = new userControl(); // Crear una instancia del controlador
 
-app.post("/logIn", (req,res) =>{userController.logIn(req,res)}); // Endpoint para la función de inicio de sesión
+app.post("/logIn", (req, res) => { userController.logIn(req, res) }); // Endpoint para la función de inicio de sesión
 
 //rutas de las notas
 const noteControl = require("./controllers/noteControler");
 const noteController = new noteControl(); // Crear una instancia del controlador
-app.get("/mainPages",(req,res) =>{
-    noteController.loadMainPages(req,res)
-    
-})
+app.get("/mainPages", (req, res) => {
+    noteController.loadMainPages(req, res)
+});
 
-app.get("/getNote/:notaId", (req,res) =>{noteController.getNote(req,res)})
-app.get("/deleteNote/:notaId", (req,res) =>{noteController.deleteNote(req,res)})
-app.post("/updateNote/:notaId", (req,res) =>{noteController.updateNote(req,res)})
-app.post("/createNote",(req,res)=>{noteController.creteNote(req,res)})
-app.post("/buscarXNombre",(req,res)=>{noteController.buscarxNombre(req,res)})
+app.get("/getNote/:notaId", (req, res) => { noteController.getNote(req, res) });
+app.get("/deleteNote/:notaId", (req, res) => { noteController.deleteNote(req, res) });
+app.post("/updateNote/:notaId", (req, res) => { noteController.updateNote(req, res) });
+app.post("/createNote", (req, res) => { noteController.createNote(req, res) });
+app.post("/buscarXNombre", (req, res) => { noteController.buscarxNombre(req, res) });
+
+//rutas para las listas
+const listControl = require("./controllers/listControler");
+const listController = new listControl(); // Crear una instancia del controlador
+app.post("/createList", (req, res) => { listController.createList(req, res) });
+app.get("/deleteList/:notaId", (req, res) => { listController.deleteList(req, res) });
+
 //ejecutar servidor
 const port = process.env.PORT || 3002;
 app.listen(port, () => {

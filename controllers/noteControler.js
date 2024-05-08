@@ -1,5 +1,5 @@
 const noteModel = require("../models/noteModel");
-
+const listModel = require("../models/listModel");
 class noteControl {
     async loadMainPages(req, res) {
         try {
@@ -13,7 +13,11 @@ class noteControl {
             }
             //carga las notas
             const data = await modelo.getAllNotes([userId]);
-                return res.render("main",{rows:data.rows})
+            //carga las listas
+                const modeloListas = new  listModel()
+                const data2 = await modeloListas.getAllList([userId]);
+                console.log(data2.rows)
+                return res.render("main",{rows:data.rows,listas:data2.rows})
         } catch (error) {
             console.log(error); // Imprime el error para diagnosticar el problema
             return res.status(500).send(`<h1 style="color: red; text-align: center;">${error}</h1>`);
@@ -97,7 +101,11 @@ class noteControl {
             //carga las notas
             const titulo = req.body.parametro
             const data = await modelo.buscarNombre([userId,titulo,titulo]);
-                return res.render("main",{rows:data.rows})
+
+            //carga las listas 
+            const modeloListas = listModel()
+            const data2 = await modeloListas.buscarNombre([userId,titulo,titulo]);
+                return res.render("main",{rows:data.rows,listas:data2.rows})
         } catch (error) {
             console.log(error); // Imprime el error para diagnosticar el problema
             return res.status(500).send(`<h1 style="color: red; text-align: center;">${error}</h1>`);
