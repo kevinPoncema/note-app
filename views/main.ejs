@@ -30,7 +30,7 @@
                 <a class="nav-link" href="#" data-toggle="modal" data-target="#crearNotaModal">Crear Nota</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Crear Lista</a>
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#crearListaModal">Crear Lista</a>
             </li>
         </ul>
         <!-- Formulario de búsqueda -->
@@ -73,7 +73,7 @@
                     <div class="card mb-4">
                         <div class="card-body d-flex justify-content-between align-items-center">
                             <!-- Título de la lista -->
-                            <h5 class="card-title font-lg mb-0 note-title" data-id="<%= lista.id_list %>"><%= lista.titulo_list %></h5>
+                            <h5 class="card-title font-lg mb-0 list-title" data-id="<%= lista.id_list %>"><%= lista.titulo_list %></h5>
                             <!-- Botón de eliminar -->
                             <form action="/deleteList/<%= lista.id_list %>" method="get">
                                 <button class="btn btn-danger delete-btn" type="submit">Eliminar</button>
@@ -117,19 +117,47 @@
     </div>
 </div>
 
+<!-- Modal para crear una nueva lista -->
+<div class="modal fade" id="crearListaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Crear Lista</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/createList" method="post">
+                    <div class="form-group">
+                        <label for="tituloLista">Título de la Lista</label>
+                        <input type="text" class="form-control" id="tituloLista" name="tituloLista">
+                        <br>
+                        <label for="tagsLista">Tags separda por coma(js,html,php)</label>
+                        <input type="text" class="form-control" id="tagsLista" name="tagsLista" values="">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-    // Script para redirigir al hacer clic en el título de la nota
-    document.querySelectorAll('.note-title').forEach(item => {
+    // Script para redirigir al hacer clic en el título de la nota o lista
+    document.querySelectorAll('.note-title, .list-title').forEach(item => {
         item.addEventListener('click', event => {
-            const noteId = item.getAttribute('data-id');
-            window.location.href = "/getNote/" + noteId;
+            const itemId = item.getAttribute('data-id');
+            const itemType = item.classList.contains('note-title') ? 'note' : 'list';
+            window.location.href = `/get${itemType}/${itemId}`;
         });
     });
 </script>
 </body>
 </html>
+

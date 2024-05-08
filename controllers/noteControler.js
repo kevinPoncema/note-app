@@ -16,7 +16,6 @@ class noteControl {
             //carga las listas
                 const modeloListas = new  listModel()
                 const data2 = await modeloListas.getAllList([userId]);
-                console.log(data2.rows)
                 return res.render("main",{rows:data.rows,listas:data2.rows})
         } catch (error) {
             console.log(error); // Imprime el error para diagnosticar el problema
@@ -101,7 +100,6 @@ class noteControl {
             //carga las notas
             const titulo = req.body.parametro
             const data = await modelo.buscarNombre([userId,titulo,titulo]);
-
             //carga las listas 
             const modeloListas = new listModel()
             const data2 = await modeloListas.buscarNombre([userId,titulo,titulo]);

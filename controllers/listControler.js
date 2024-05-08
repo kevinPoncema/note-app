@@ -37,8 +37,8 @@ class listControl {
         try {
             const modelo = new listModel(); // Crear una instancia del modelo
             //crea la lista
-            const titulo = req.body.titulo;
-            const tags = req.body.tags || null;
+            const titulo = req.body.tituloLista;
+            const tags = req.body.tagsLista || null;
             const userId = req.session.userId;
             await modelo.createList([titulo, userId, tags]);
             return this.loadMainPages(req, res);

@@ -51,7 +51,7 @@ app.post("/buscarXNombre", (req, res) => { noteController.buscarxNombre(req, res
 //rutas para las listas
 const listControl = require("./controllers/listControler");
 const listController = new listControl(); // Crear una instancia del controlador
-app.post("/createList", (req, res) => { listController.createList(req, res) });
+app.post("/createList", (req, res) => { listController.creteList(req, res) });
 app.get("/deleteList/:notaId", (req, res) => { listController.deleteList(req, res) });
 
 //ejecutar servidor
