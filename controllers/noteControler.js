@@ -103,7 +103,7 @@ class noteControl {
             const data = await modelo.buscarNombre([userId,titulo,titulo]);
 
             //carga las listas 
-            const modeloListas = listModel()
+            const modeloListas = new listModel()
             const data2 = await modeloListas.buscarNombre([userId,titulo,titulo]);
                 return res.render("main",{rows:data.rows,listas:data2.rows})
         } catch (error) {

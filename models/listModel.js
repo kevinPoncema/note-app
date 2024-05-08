@@ -72,14 +72,14 @@ class listModel {
                     const conexion = new ConexionClass();
                     await conexion.conectar();
                     const sql = `
-                    SELECT * 
-                    FROM tbl_list 
-                    WHERE tbl_list.id_user = ? 
-                    AND (
-                        tbl_list.titulo_list LIKE CONCAT('%', ? , '%') 
-                        OR (tbl_list.tags IS NOT NULL AND tbl_list.tags.tags LIKE CONCAT('%', ? , '%'))
-                    );
-                `;                
+                        SELECT * 
+                        FROM tbl_list 
+                        WHERE tbl_list.id_user = ? 
+                        AND (
+                            tbl_list.titulo_list LIKE CONCAT('%', ? , '%') 
+                            OR (tbl_list.tags IS NOT NULL AND tbl_list.tags LIKE CONCAT('%', ? , '%'))  -- Corrección aquí
+                        );
+                    `;                
                     const data = await conexion.queryParams(sql, params);
                     await conexion.desconectar(); // Cerrar la conexión después de usarla
                     return data;
@@ -87,7 +87,8 @@ class listModel {
                     console.error('Error al Buscar Notas por Nombre:', error);
                     throw error;
                 }
-            }       
+            }
+            
 }
 
 module.exports = listModel;
