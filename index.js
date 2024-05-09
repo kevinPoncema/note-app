@@ -53,7 +53,7 @@ const listControl = require("./controllers/listControler");
 const listController = new listControl(); // Crear una instancia del controlador
 app.post("/createList", (req, res) => { listController.creteList(req, res) });
 app.get("/deleteList/:notaId", (req, res) => { listController.deleteList(req, res) });
-
+app.get("/getlist/:notaId", (req, res) => { listController.getList(req, res) });
 //ejecutar servidor
 const port = process.env.PORT || 3002;
 app.listen(port, () => {

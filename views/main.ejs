@@ -19,7 +19,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#"></a>
+    <a class="navbar-brand" href="#">Note App</a> <!-- Cambio realizado aquí -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -105,10 +105,10 @@
                 <form action="/createNote" method="post">
                     <div class="form-group">
                         <label for="tituloNota">Título de la Nota</label>
-                        <input type="text" class="form-control" id="titulo" name="titulo">
+                        <input type="text" class="form-control" id="tituloNota" name="titulo">
                         <br>
-                        <label for="tagsoNota">Tags separda por coma(js,html,php)</label>
-                        <input type="text" class="form-control" id="tagsoNota" name="tags" values="">
+                        <label for="tagsNota">Tags separados por coma (js,html,php)</label> <!-- Corrección realizada aquí -->
+                        <input type="text" class="form-control" id="tagsNota" name="tags" value=""> <!-- Corrección realizada aquí -->
                     </div>
                     <button type="submit" class="btn btn-primary">Crear</button>
                 </form>
@@ -133,8 +133,8 @@
                         <label for="tituloLista">Título de la Lista</label>
                         <input type="text" class="form-control" id="tituloLista" name="tituloLista">
                         <br>
-                        <label for="tagsLista">Tags separda por coma(js,html,php)</label>
-                        <input type="text" class="form-control" id="tagsLista" name="tagsLista" values="">
+                        <label for="tagsLista">Tags separados por coma (js,html,php)</label> <!-- Corrección realizada aquí -->
+                        <input type="text" class="form-control" id="tagsLista" name="tagsLista" value=""> <!-- Corrección realizada aquí -->
                     </div>
                     <button type="submit" class="btn btn-primary">Crear</button>
                 </form>
@@ -160,4 +160,5 @@
 </script>
 </body>
 </html>
+
 

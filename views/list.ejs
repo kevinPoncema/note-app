@@ -14,6 +14,11 @@
                 margin: auto;
             }
         }
+        
+        /* Estilo para texto tachado */
+        .item-name.false {
+            text-decoration: line-through;
+        }
     </style>
 </head>
 <body>
@@ -41,21 +46,20 @@
                                 <% 
                                 var idNum = 0;
                                 Object.keys(row.contenido_list).forEach(function(key) { %>
-                                    <li class="list-group-item" id="ElementoList<%= idNum %>">
-                                        <span class="item-name <% if (!row.contenido_list[key]) { %>text-muted<% } %>">
+                                    <li class="list-group-item" id="ElementoList<%= idNum %>" data-marked="<%= row.contenido_list[key] %>">
+                                        <span class="item-name <%= row.contenido_list[key] ? 'false' : '' %>">
                                             <%= key %>
                                         </span>
                                         <button class="btn btn-danger btn-sm float-right ml-2" onclick="eliminarElemento(<%= idNum %>)">-</button>
                                         <!-- Cambiando el texto del botón y llamando a la función marcarDesmarcarElemento -->
                                         <button class="btn btn-success btn-sm float-right" onclick="marcarDesmarcarElemento(<%= idNum %>)">
-                                            <% if (row.contenido_list[key]) { %>Marcar<% } else { %>Desmarcar<% } %>
+                                            <% if (row.contenido_list[key]) { %>Desmarcar<% } else { %>Marcar<% } %>
                                         </button>
                                     </li>
                                     <% idNum++; %>
                                 <% }); %>
                             </ul>
                         </div>
-                        
                         
                         <div class="card-footer">
                             <button class="btn btn-primary btn-sm" onclick="guardarCambios(this)">Guardar Cambios</button>
@@ -91,7 +95,6 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <!-- Llamando a la función para agregar un elemento -->
                 <button type="button" class="btn btn-primary" onclick="agregarElementoLista()">Agregar</button>
             </div>
         </div>
@@ -104,10 +107,9 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-// Variable para mantener el contador de ID único para los elementos de la lista
-let idNum = 0;
 
-// Función para eliminar un elemento de la lista
+
+    // Función para eliminar un elemento de la lista
 function eliminarElemento(id) {
     // Obtener el elemento <li> por su ID
     const elemento = document.getElementById('ElementoList' + id);
@@ -124,41 +126,39 @@ function eliminarElemento(id) {
 
 // Función para marcar o desmarcar un elemento de la lista
 function marcarDesmarcarElemento(id) {
-    // Obtener el elemento <span> por su ID
+    // Obtener el elemento <li> por su ID
+    const elemento = document.getElementById('ElementoList' + id);
+    // Obtener el elemento <span> por su clase
     const spanElement = document.querySelector('#ElementoList' + id + ' .item-name');
     // Obtener el botón por su ID
     const buttonElement = document.querySelector('#ElementoList' + id + ' .btn-success');
 
-    // Verificar si el elemento <span> existe antes de intentar marcarlo o desmarcarlo
-    if (spanElement && buttonElement) {
-        // Obtener el estado actual del elemento marcado
-        const marked = (document.getElementById('ElementoList' + id).getAttribute('data-marked') === 'true');
+    // Verificar si el elemento y los elementos internos existen antes de intentar marcarlos o desmarcarlos
+    if (elemento && spanElement && buttonElement) {
+        // Verificar si el texto del span está tachado o no
+        const isMarked = spanElement.classList.contains('false');
 
         // Si está marcado, quitar el tachado y cambiar el texto del botón a "Marcar"
-        if (marked) {
-            spanElement.style.textDecoration = 'none';
+        if (isMarked) {
+            spanElement.classList.remove('false');
             buttonElement.innerText = 'Marcar';
         } else {
             // Si no está marcado, aplicar el tachado y cambiar el texto del botón a "Desmarcar"
-            spanElement.style.textDecoration = 'line-through';
+            spanElement.classList.add('false');
             buttonElement.innerText = 'Desmarcar';
         }
 
-        // Cambiar el estado marcado en el atributo data-marked del <li>
-        document.getElementById('ElementoList' + id).setAttribute('data-marked', !marked);
-        
         console.log('Elemento marcado/desmarcado con éxito:', id);
     } else {
         console.log('No se encontró el elemento para marcar/desmarcar con ID:', id);
     }
 }
 
-// Función para generar un ID aleatorio dentro del rango especificado
+    // Función para generar un ID aleatorio entre 200 y 700
 function generarIdAleatorio() {
-    return Math.floor(Math.random() * (800 - 200 + 1)) + 200;
+    return Math.floor(Math.random() * (700 - 200 + 1)) + 200;
 }
 
-// Función para agregar un elemento a la lista
 // Función para agregar un elemento a la lista
 function agregarElementoLista() {
     // Obtener el texto del input
@@ -200,7 +200,6 @@ function agregarElementoLista() {
     // Cerrar el modal después de agregar el elemento
     $('#agregarElementoModal').modal('hide');
 }
-
 
 </script>
 

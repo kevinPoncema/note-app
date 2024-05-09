@@ -18,7 +18,7 @@ class listModel {
         try {
             const conexion = new ConexionClass();
             await conexion.conectar();
-            const data = await conexion.queryParams("SELECT * FROM titulo_list WHERE tbl_list.id_list = ?",params);
+            const data = await conexion.queryParams("SELECT * FROM tbl_list WHERE tbl_list.id_list = ?",params);
             await conexion.desconectar(); // Cerrar la conexión después de usarla
             return  data;
         } catch (error) {
