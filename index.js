@@ -17,6 +17,8 @@ app.use(session({
     saveUninitialized: false // Evita guardar sesiones vacías
 }));
 
+// Middleware para analizar solicitudes con contenido JSON
+app.use(express.json());
 
 // Configurar EJS como motor de vistas
 app.set('view engine', 'ejs');
@@ -54,7 +56,10 @@ const listController = new listControl(); // Crear una instancia del controlador
 app.post("/createList", (req, res) => { listController.creteList(req, res) });
 app.get("/deleteList/:notaId", (req, res) => { listController.deleteList(req, res) });
 app.get("/getlist/:notaId", (req, res) => { listController.getList(req, res) });
-//ejecutar servidor
+
+app.post('/updateList', (req, res) => {listController.updateList(req,res)});
+  
+  // Iniciar el servidor
 const port = process.env.PORT || 3002;
 app.listen(port, () => {
     console.log("Servidor en ejecución en el puerto " + port);

@@ -49,6 +49,19 @@ class listControl {
         }
     }
 
+    async updateList(req, res) {
+        try {
+            const modelo = new listModel(); // Crear una instancia del modelo
+            const data = req.body; // Obtener el objeto JSON del cuerpo de la solicitud
+            let titulo = data.titulo;
+            await modelo.updateList([titulo, data.contenido,data.id_lista]);
+            res.send("ok")
+        } catch (error) {
+            console.log(error); // Imprime el error para diagnosticar el problema
+            return res.status(500).send(`<h1 style="color: red; text-align: center;">${error}</h1>`);
+        }
+    }
+
     async loadMainPages(req, res) {
         res.redirect("/mainPages");
     }

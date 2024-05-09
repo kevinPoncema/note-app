@@ -62,7 +62,7 @@
                         </div>
                         
                         <div class="card-footer">
-                            <button class="btn btn-primary btn-sm" onclick="guardarCambios(this)">Guardar Cambios</button>
+                            <button class="btn btn-primary btn-sm" onclick="guardarCambios()">Guardar Cambios</button>
                         </div>
                     </div>
                 </div>
@@ -199,6 +199,73 @@ function agregarElementoLista() {
 
     // Cerrar el modal después de agregar el elemento
     $('#agregarElementoModal').modal('hide');
+}
+
+function getDataObjs() {
+    const listTitle = document.querySelector('.list-title').value;
+    const listId = document.querySelector('.card').dataset.listId; // Obtener la ID de la lista
+    const listItems = document.querySelectorAll('#conElementos .list-group-item');
+    const dataObj = {
+        id_lista: listId, // Agregar la ID de la lista al objeto
+        titulo: listTitle,
+        contenido: {}
+    };
+
+    listItems.forEach(item => {
+        const itemName = item.querySelector('.item-name').innerText;
+        const isMarked = item.querySelector('.item-name').classList.contains('false');
+        dataObj.contenido[itemName] = !isMarked;
+    });
+
+    return dataObj;
+}
+
+
+function guardarCambios() {
+  // Obtener los datos del objeto
+  const objeto = getDataObjs();
+
+// Convertir el objeto a una cadena JSON antes de enviarlo
+const queryString = Object.keys(objeto).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(JSON.stringify(objeto[key]))).join('&');
+
+// Realizar la solicitud GET al servidor con la cadena de consulta como parámetro
+fetch('/mostrarObjeto?' + queryString)
+.then(response => response.text())
+.then(message => {
+    console.log(message); // Imprimir el mensaje de respuesta del servidor en la consola
+})
+.catch(error => {
+    console.error('Error al enviar el objeto:', error);
+});
+}
+
+function guardarCambios() {
+  // Datos del objeto a enviar
+  const objeto = getDataObjs()
+
+  // Configuración de la solicitud
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(objeto)
+  };
+
+  // Realizar la solicitud POST al servidor
+  fetch('/updateList', requestOptions)
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('La respuesta de la red no fue exitosa');
+      }
+      return response.text();
+    })
+    .then(message => {
+        window.location.href = "http://localhost:3001/mainPages";// Imprimir el mensaje de respuesta del servidor en la consola
+    })
+    .catch(error => {
+      alert('Error al enviar el objeto:', error);
+    });
 }
 
 </script>

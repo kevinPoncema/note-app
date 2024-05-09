@@ -40,11 +40,11 @@ class listModel {
             }
         }
 
-            async updateNot(params) {
+            async updateList(params) {
                 try {
                     const conexion = new ConexionClass();
                     await conexion.conectar();
-                    await conexion.queryModifay("UPDATE tbl_notas SET titulo_nota = ?,cnitenido_nota = ?, tags = ? WHERE id_nota = ?;",params);
+                    await conexion.queryModifay("UPDATE tbl_list SET titulo_list = ?,contenido_list = ? WHERE id_list = ?;",params);
                     await conexion.desconectar(); // Cerrar la conexión después de usarla
                     return  0;
                 } catch (error) {
