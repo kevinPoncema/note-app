@@ -43,11 +43,10 @@ const noteController = new noteControl(); // Crear una instancia del controlador
 app.get("/mainPages", (req, res) => {
     noteController.loadMainPages(req, res)
 });
-
 app.get("/getNote/:notaId", (req, res) => { noteController.getNote(req, res) });
 app.get("/deleteNote/:notaId", (req, res) => { noteController.deleteNote(req, res) });
 app.post("/updateNote/:notaId", (req, res) => { noteController.updateNote(req, res) });
-app.post("/createNote", (req, res) => { noteController.createNote(req, res) });
+app.post("/createNote", (req, res) => { noteController.creteNote(req, res) });
 app.post("/buscarXNombre", (req, res) => { noteController.buscarxNombre(req, res) });
 
 //rutas para las listas
