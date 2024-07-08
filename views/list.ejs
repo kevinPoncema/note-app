@@ -35,32 +35,34 @@
                     <div class="card" data-list-id="<%= row.id_list %>">
                         <div class="card-header">
                             <input type="text" class="form-control list-title" value="<%= row.titulo_list %>">
-                            <form action="/deleteList/<%= rows[0].id_list %>" method="get">
+                            <form action="/deleteList/<%= row.id_list %>" method="get" style="display:inline;">
                                 <button class="btn btn-danger float-right ml-2" type="submit">Eliminar Lista</button>
                             </form>
                             <button class="btn btn-primary float-right" data-toggle="modal" data-target="#agregarElementoModal" data-list-id="<%= row.id_list %>">Agregar</button>
                         </div>
                         <div class="card-body">
-                            <ul class="list-group" id="conElementos">
+                            <ul class="list-group" id="conElementos<%= row.id_list %>">
                                 <!-- Contenido de la lista -->
                                 <% 
                                 var idNum = 0;
-                                Object.keys(row.contenido_list).forEach(function(key) { %>
-                                    <li class="list-group-item" id="ElementoList<%= idNum %>" data-marked="<%= row.contenido_list[key] %>">
-                                        <span class="item-name <%= row.contenido_list[key] ? 'false' : '' %>">
-                                            <%= key %>
-                                        </span>
-                                        <button class="btn btn-danger btn-sm float-right ml-2" onclick="eliminarElemento(<%= idNum %>)">-</button>
-                                        <!-- Cambiando el texto del botón y llamando a la función marcarDesmarcarElemento -->
-                                        <button class="btn btn-success btn-sm float-right" onclick="marcarDesmarcarElemento(<%= idNum %>)">
-                                            <% if (row.contenido_list[key]) { %>Desmarcar<% } else { %>Marcar<% } %>
-                                        </button>
-                                    </li>
-                                    <% idNum++; %>
-                                <% }); %>
+                                if (row.contenido_list && Object.keys(row.contenido_list).length > 0) {
+                                    Object.keys(row.contenido_list).forEach(function(key) { %>
+                                        <li class="list-group-item" id="ElementoList<%= idNum %>" data-marked="<%= row.contenido_list[key] %>">
+                                            <span class="item-name <%= row.contenido_list[key] ? '' : 'false' %>">
+                                                <%= key %>
+                                            </span>
+                                            <button class="btn btn-danger btn-sm float-right ml-2" onclick="eliminarElemento(<%= idNum %>)">-</button>
+                                            <button class="btn btn-success btn-sm float-right" onclick="marcarDesmarcarElemento(<%= idNum %>)">
+                                                <% if (row.contenido_list[key]) { %>Marcar<% } else { %>Desmarcar<% } %>
+                                            </button>
+                                        </li>
+                                        <% idNum++; %>
+                                    <% });
+                                } else { %>
+                                    <li class="list-group-item no-elements">No hay elementos en la lista.</li>
+                                <% } %>
                             </ul>
                         </div>
-                        
                         <div class="card-footer">
                             <button class="btn btn-primary btn-sm" onclick="guardarCambios()">Guardar Cambios</button>
                         </div>
@@ -90,6 +92,7 @@
                     <div class="form-group">
                         <label for="elemento">Elemento</label>
                         <input type="text" class="form-control" id="elemento" name="elemento">
+                        <input type="hidden" id="modal-list-id">
                     </div>
                 </form>
             </div>
@@ -107,167 +110,136 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 <script>
-
-
     // Función para eliminar un elemento de la lista
-function eliminarElemento(id) {
-    // Obtener el elemento <li> por su ID
-    const elemento = document.getElementById('ElementoList' + id);
-    
-    // Verificar si el elemento existe antes de intentar eliminarlo
-    if (elemento) {
-        // Eliminar el elemento del DOM
-        elemento.remove();
-        console.log('Elemento eliminado con éxito:', id);
-    } else {
-        console.log('No se encontró el elemento con ID:', id);
-    }
-}
-
-// Función para marcar o desmarcar un elemento de la lista
-function marcarDesmarcarElemento(id) {
-    // Obtener el elemento <li> por su ID
-    const elemento = document.getElementById('ElementoList' + id);
-    // Obtener el elemento <span> por su clase
-    const spanElement = document.querySelector('#ElementoList' + id + ' .item-name');
-    // Obtener el botón por su ID
-    const buttonElement = document.querySelector('#ElementoList' + id + ' .btn-success');
-
-    // Verificar si el elemento y los elementos internos existen antes de intentar marcarlos o desmarcarlos
-    if (elemento && spanElement && buttonElement) {
-        // Verificar si el texto del span está tachado o no
-        const isMarked = spanElement.classList.contains('false');
-
-        // Si está marcado, quitar el tachado y cambiar el texto del botón a "Marcar"
-        if (isMarked) {
-            spanElement.classList.remove('false');
-            buttonElement.innerText = 'Marcar';
+    function eliminarElemento(id) {
+        const elemento = document.getElementById('ElementoList' + id);
+        if (elemento) {
+            elemento.remove();
+            console.log('Elemento eliminado con éxito:', id);
         } else {
-            // Si no está marcado, aplicar el tachado y cambiar el texto del botón a "Desmarcar"
-            spanElement.classList.add('false');
-            buttonElement.innerText = 'Desmarcar';
+            console.log('No se encontró el elemento con ID:', id);
         }
-
-        console.log('Elemento marcado/desmarcado con éxito:', id);
-    } else {
-        console.log('No se encontró el elemento para marcar/desmarcar con ID:', id);
     }
-}
+
+    // Función para marcar o desmarcar un elemento de la lista
+    function marcarDesmarcarElemento(id) {
+        const elemento = document.getElementById('ElementoList' + id);
+        const spanElement = document.querySelector('#ElementoList' + id + ' .item-name');
+        const buttonElement = document.querySelector('#ElementoList' + id + ' .btn-success');
+
+        if (elemento && spanElement && buttonElement) {
+            const isMarked = spanElement.classList.contains('false');
+            if (isMarked) {
+                spanElement.classList.remove('false');
+                buttonElement.innerText = 'Marcar';
+            } else {
+                spanElement.classList.add('false');
+                buttonElement.innerText = 'Desmarcar';
+            }
+            console.log('Elemento marcado/desmarcado con éxito:', id);
+        } else {
+            console.log('No se encontró el elemento para marcar/desmarcar con ID:', id);
+        }
+    }
 
     // Función para generar un ID aleatorio entre 200 y 700
-function generarIdAleatorio() {
-    return Math.floor(Math.random() * (700 - 200 + 1)) + 200;
-}
+    function generarIdAleatorio() {
+        return Math.floor(Math.random() * (700 - 200 + 1)) + 200;
+    }
 
-// Función para agregar un elemento a la lista
-function agregarElementoLista() {
-    // Obtener el texto del input
-    const nuevoElemento = document.getElementById('elemento').value;
+    // Abrir el modal y configurar la lista de destino
+    $('#agregarElementoModal').on('show.bs.modal', function (event) {
+        var button = $(event.relatedTarget); // Botón que abrió el modal
+        var listId = button.data('list-id'); // Extraer la información de datos
 
-    // Generar un ID aleatorio
-    const nuevoId = generarIdAleatorio();
-
-    // Crear un nuevo elemento li
-    const nuevoLi = document.createElement('li');
-    nuevoLi.className = 'list-group-item';
-    nuevoLi.id = 'ElementoList' + nuevoId;
-
-    // Crear un span con el texto del input
-    const nuevoSpan = document.createElement('span');
-    nuevoSpan.className = 'item-name';
-    nuevoSpan.innerText = nuevoElemento;
-
-    // Crear botón para eliminar
-    const botonEliminar = document.createElement('button');
-    botonEliminar.className = 'btn btn-danger btn-sm float-right ml-2';
-    botonEliminar.innerText = '-';
-    botonEliminar.setAttribute('onclick', 'eliminarElemento(' + nuevoId + ')');
-
-    // Crear botón para marcar/desmarcar
-    const botonMarcarDesmarcar = document.createElement('button');
-    botonMarcarDesmarcar.className = 'btn btn-success btn-sm float-right';
-    botonMarcarDesmarcar.innerText = 'Marcar';
-    botonMarcarDesmarcar.setAttribute('onclick', 'marcarDesmarcarElemento(' + nuevoId + ')');
-
-    // Agregar el span y los botones al nuevo elemento li
-    nuevoLi.appendChild(nuevoSpan);
-    nuevoLi.appendChild(botonEliminar);
-    nuevoLi.appendChild(botonMarcarDesmarcar);
-
-    // Agregar el nuevo elemento li al contenedor de elementos
-    document.getElementById('conElementos').appendChild(nuevoLi);
-
-    // Cerrar el modal después de agregar el elemento
-    $('#agregarElementoModal').modal('hide');
-}
-
-function getDataObjs() {
-    const listTitle = document.querySelector('.list-title').value;
-    const listId = document.querySelector('.card').dataset.listId; // Obtener la ID de la lista
-    const listItems = document.querySelectorAll('#conElementos .list-group-item');
-    const dataObj = {
-        id_lista: listId, // Agregar la ID de la lista al objeto
-        titulo: listTitle,
-        contenido: {}
-    };
-
-    listItems.forEach(item => {
-        const itemName = item.querySelector('.item-name').innerText;
-        const isMarked = item.querySelector('.item-name').classList.contains('false');
-        dataObj.contenido[itemName] = !isMarked;
+        // Actualizar el ID de la lista en el modal
+        var modal = $(this);
+        modal.find('#modal-list-id').val(listId);
     });
 
-    return dataObj;
-}
+    // Función para agregar un elemento a la lista
+    function agregarElementoLista() {
+        const nuevoElemento = document.getElementById('elemento').value;
+        if (nuevoElemento.trim() === '') return;
 
+        const listId = document.getElementById('modal-list-id').value;
+        const nuevoId = generarIdAleatorio();
 
-function guardarCambios() {
-  // Obtener los datos del objeto
-  const objeto = getDataObjs();
+        const nuevoLi = document.createElement('li');
+        nuevoLi.className = 'list-group-item';
+        nuevoLi.id = 'ElementoList' + nuevoId;
 
-// Convertir el objeto a una cadena JSON antes de enviarlo
-const queryString = Object.keys(objeto).map(key => encodeURIComponent(key) + '=' + encodeURIComponent(JSON.stringify(objeto[key]))).join('&');
+        const nuevoSpan = document.createElement('span');
+        nuevoSpan.className = 'item-name';
+        nuevoSpan.innerText = nuevoElemento;
 
-// Realizar la solicitud GET al servidor con la cadena de consulta como parámetro
-fetch('/mostrarObjeto?' + queryString)
-.then(response => response.text())
-.then(message => {
-    console.log(message); // Imprimir el mensaje de respuesta del servidor en la consola
-})
-.catch(error => {
-    console.error('Error al enviar el objeto:', error);
-});
-}
+        const botonEliminar = document.createElement('button');
+        botonEliminar.className = 'btn btn-danger btn-sm float-right ml-2';
+        botonEliminar.innerText = '-';
+        botonEliminar.setAttribute('onclick', 'eliminarElemento(' + nuevoId + ')');
 
-function guardarCambios() {
-  // Datos del objeto a enviar
-  const objeto = getDataObjs()
+        const botonMarcarDesmarcar = document.createElement('button');
+        botonMarcarDesmarcar.className = 'btn btn-success btn-sm float-right';
+        botonMarcarDesmarcar.innerText = 'Marcar';
+        botonMarcarDesmarcar.setAttribute('onclick', 'marcarDesmarcarElemento(' + nuevoId + ')');
 
-  // Configuración de la solicitud
-  const requestOptions = {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(objeto)
-  };
+        nuevoLi.appendChild(nuevoSpan);
+        nuevoLi.appendChild(botonEliminar);
+        nuevoLi.appendChild(botonMarcarDesmarcar);
 
-  // Realizar la solicitud POST al servidor
-  fetch('/updateList', requestOptions)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('La respuesta de la red no fue exitosa');
-      }
-      return response.text();
-    })
-    .then(message => {
-        window.location.href = "http://localhost:3001/mainPages";// Imprimir el mensaje de respuesta del servidor en la consola
-    })
-    .catch(error => {
-      alert('Error al enviar el objeto:', error);
-    });
-}
+        const listaElementos = document.getElementById('conElementos' + listId);
+        if (listaElementos.querySelector('.no-elements')) {
+            listaElementos.innerHTML = '';
+        }
+        listaElementos.appendChild(nuevoLi);
 
+        $('#agregarElementoModal').modal('hide');
+        document.getElementById('agregarElementoForm').reset();
+    }
+
+    function getDataObjs() {
+        const listTitle = document.querySelector('.list-title').value;
+        const listId = document.querySelector('.card').dataset.listId; 
+        const listItems = document.querySelectorAll('#conElementos' + listId + ' .list-group-item');
+        const dataObj = {
+            id_lista: listId,
+            titulo: listTitle,
+            contenido: {}
+        };
+
+        listItems.forEach(item => {
+            const itemName = item.querySelector('.item-name').innerText;
+            const isMarked = item.querySelector('.item-name').classList.contains('false');
+            dataObj.contenido[itemName] = !isMarked;
+        });
+
+        return dataObj;
+    }
+
+    function guardarCambios() {
+        const objeto = getDataObjs();
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(objeto)
+        };
+
+        fetch('/updateList', requestOptions)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('La respuesta de la red no fue exitosa');
+                }
+                return response.text();
+            })
+            .then(message => {
+                window.location.href = "http://localhost:3001/mainPages";
+            })
+            .catch(error => {
+                alert('Error al enviar el objeto:', error);
+            });
+    }
 </script>
 
 </body>

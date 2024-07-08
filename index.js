@@ -28,7 +28,8 @@ app.set('views', path.join(__dirname, 'views'));
 
 // Ruta para servir el archivo logIn.html
 app.get("/", (req, res) => {
-    res.render("login", { message: "", colorP: "success-message" });
+    res.send("hola")
+   // res.render("login", { message: "", colorP: "success-message" });
 });
 
 // Ruta para el inicio de sesión

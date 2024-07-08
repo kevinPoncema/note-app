@@ -37,13 +37,11 @@
                         <!-- Botones de Guardar y Eliminar -->
                         <div class="form-group d-flex justify-content-between">
                             <button type="submit" class="btn btn-primary">Guardar</button>
-                            <form action="/deleteNote/<%= rows[0].id_nota %>" method="get">
-                                <button type="submit" class="btn btn-danger">Eliminar</button>
-                            </form>
                         </div>
                     </form>
-                    
-                    
+                    <form action="/deleteNote/<%= rows[0].id_nota %>" method="get">
+                        <button type="submit" class="btn btn-danger">Eliminar</button>
+                    </form>
                 </div>
             </div>
         </div>

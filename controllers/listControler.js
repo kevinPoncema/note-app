@@ -13,6 +13,7 @@ class listControl {
             }
             //carga las notas
             const data = await modelo.getList([req.params.notaId]);
+            console.log(data)
           //  console.log(data.rows)
             return res.render("list", { rows: data.rows });
         } catch (error) {
