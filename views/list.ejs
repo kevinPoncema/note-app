@@ -234,7 +234,11 @@
                 return response.text();
             })
             .then(message => {
-                window.location.href = "http://localhost:3001/mainPages";
+                // Construir la URL basada en el origen (protocolo + host + puerto si aplica)
+                // Ej: https://midominio.com + '/mainPages' => https://midominio.com/mainPages
+                const origin = window.location.origin || (window.location.protocol + '//' + window.location.host);
+                const target = origin.replace(/\/$/, '') + '/mainPages';
+                window.location.href = target;
             })
             .catch(error => {
                 alert('Error al enviar el objeto:', error);
